@@ -1,0 +1,110 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if listings %}<h2>My Listings</h2>
+    <div>
+        {% for listing in listings %}
+            <div class="listing">
+                <div class="row justify-content-center">
+                    <div class="col text-center align-items-center">
+                        <img class="d-block m-auto" src="{{ listing.image }}" style="max-height: 400px; max-width: 400px;">
+                    </div>
+                    <div class="col col-sm-7 justify-content-center" style="margin-top: 20px; line-height: 18px;">
+                        <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+                        <p><strong>Price:</strong> ${{ listing.price | floatformat:2 }}</p>
+                        <p>{{ listing.description }}</p>
+                        <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>{% endif %}
+
+    {% if archivedListings %}<h2>Archived Listings</h2>
+    <div>
+        {% for listing in archivedListings %}
+            <div class="listing">
+                <div class="row justify-content-center">
+                    <div class="col text-center align-items-center">
+                        <img class="d-block m-auto" src="{{ listing.image }}" style="max-height: 400px; max-width: 400px;">
+                    </div>
+                    <div class="col col-sm-7 justify-content-center" style="margin-top: 20px; line-height: 18px;">
+                        <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+                        <p><strong>Price:</strong> ${{ listing.price | floatformat:2 }}</p>
+                        <p>{{ listing.description }}</p>
+                        <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
+                        <p class="text-muted"><small>Closed: {{ listing.close_time }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>{% endif %}
+
+    {% if wonOrNot %}<h2>Won Listings</h2>
+    <div>
+        {% for listing in wonListings %}
+            {% if listing.winner == user %}
+                <div class="listing">
+                    <div class="row justify-content-center">
+                        <div class="col text-center align-items-center">
+                            <img class="d-block m-auto" src="{{ listing.image }}" style="max-height: 400px; max-width: 400px;">
+                        </div>
+                        <div class="col col-sm-7 justify-content-center" style="margin-top: 20px; line-height: 18px;">
+                            <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+                            <p><strong>Price:</strong> {{ listing.price }}</p>
+                            <p>{{ listing.description }}</p>
+                            <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
+                            <p class="text-muted"><small>Closed: {{ listing.win_time }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>{% endif %}
+
+    <br>
+
+    <!--
+        {% if activeListings %}<h2>My Listings</h2>
+
+    <ul>
+        {% for listing in activeListings %}
+        <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+        <ol><img src="{{ listing.image }}" style="max-height: 300px; max-width: 300px;"></ol>
+        <li><a>{{ listing.description }}</a></li>
+        <li><a>Last Bid: {{ listing.price }}</a></li>
+        <li><a>Created: {{ listing.time }}</a></li>
+        {% endfor %}
+    </ul>{% endif %}
+
+    {% if archivedListings %}<h2>Archived Listings</h2>
+
+    <ul>
+        {% for listing in archivedListings %}
+        <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+        <ol><img src="{{ listing.image }}" style="max-height: 300px; max-width: 300px;"></ol>
+        <li><a>{{ listing.description }}</a></li>
+        <li><a>Last Bid: {{ listing.price }}</a></li>
+        <li><a>Created: {{ listing.time }}</a></li>
+        <li><a>Closed: {{ listing.close_time }}</a></li>
+        {% endfor %}
+    </ul>{% endif %}
+
+    {% if wonOrNot %}<h2>Won Listings</h2>
+
+    <ul>
+        {% for listing in wonListings %}
+            {% if listing.winner == user %}
+            <div class="listing">
+                <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+                <ol><img src="{{ listing.image }}" style="max-height: 300px; max-width: 300px;"></ol>
+                <li><a>{{ listing.description }}</a></li>
+                <li><a>Last Bid: {{ listing.price }}</a></li>
+                <li><a>Created: {{ listing.time }}</a></li>
+                <li><a>Closed: {{ listing.win_time }}</a></li>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </ul>{% endif %}
+    -->
+{% endblock %}
