@@ -2,8 +2,7 @@
 
 {% block body %}
 
-    {% if request.resolver_match.url_name != 'myListings' or listings %}
-        <h2>{{ category }}</h2>
+    {% if listings %}<h2>{{ category }}</h2>
         <div>
             {% for listing in listings %}
                 <div class="listing">
@@ -23,10 +22,31 @@
         </div>
     {% endif %}
     
-    {% if request.resolver_match.url_name == 'myListings' %}
-        {% if archivedListings %}<h2>Archived Listings</h2>
-            <div>
-                {% for listing in archivedListings %}
+    {% if archivedListings %}<h2>Archived Listings</h2>
+        <div>
+            {% for listing in archivedListings %}
+                <div class="listing">
+                    <div class="row justify-content-center">
+                        <div class="col text-center align-items-center">
+                            <img class="d-block m-auto" src="{{ listing.image }}" style="max-height: 280px; max-width: 400px;">
+                        </div>
+                        <div class="col col-lg-7 justify-content-center" style="margin-top: 20px; margin-left: 5px; line-height: 18px;">
+                            <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
+                            <p><strong>Price:</strong> ${{ listing.price | floatformat:2 }}</p>
+                            <p>{{ listing.description }}</p>
+                            <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
+                            <p class="text-muted"><small>Closed: {{ listing.close_time }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if wonOrNot %}<h2>Won Listings</h2>
+        <div>
+            {% for listing in wonListings %}
+                {% if listing.winner == user %}
                     <div class="listing">
                         <div class="row justify-content-center">
                             <div class="col text-center align-items-center">
@@ -34,47 +54,15 @@
                             </div>
                             <div class="col col-lg-7 justify-content-center" style="margin-top: 20px; margin-left: 5px; line-height: 18px;">
                                 <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
-                                <p><strong>Price:</strong> ${{ listing.price | floatformat:2 }}</p>
+                                <p><strong>Price:</strong> {{ listing.price }}</p>
                                 <p>{{ listing.description }}</p>
                                 <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
-                                <p class="text-muted"><small>Closed: {{ listing.close_time }}</small></p>
+                                <p class="text-muted"><small>Closed: {{ listing.win_time }}</small></p>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if wonOrNot %}<h2>Won Listings</h2>
-            <div>
-                {% for listing in wonListings %}
-                    {% if listing.winner == user %}
-                        <div class="listing">
-                            <div class="row justify-content-center">
-                                <div class="col text-center align-items-center">
-                                    <img class="d-block m-auto" src="{{ listing.image }}" style="max-height: 280px; max-width: 400px;">
-                                </div>
-                                <div class="col col-lg-7 justify-content-center" style="margin-top: 20px; margin-left: 5px; line-height: 18px;">
-                                    <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
-                                    <p><strong>Price:</strong> {{ listing.price }}</p>
-                                    <p>{{ listing.description }}</p>
-                                    <p class="text-muted"><small>Created: {{ listing.time }}</small></p>
-                                    <p class="text-muted"><small>Closed: {{ listing.win_time }}</small></p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
-    <!--<ul>
-        {% for listing in listings %}
-        <h4><a href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
-        <ol><img src="{{ listing.image }}" style="max-height: 300px; max-width: 300px;"></ol>
-        <li><a>{{ listing.description }}</a>
-        <li><a>Last Bid: {{ listing.price }}</a></li>
-        <li><a>Created: {{ listing.time }}</a></li>
-        {% endfor %}
-    </ul>-->
 {% endblock %}

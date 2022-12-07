@@ -1,7 +1,16 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Listing: {{ listings.title }}</h2>
+    <div class="row align-items-center" style="padding-left: 15px;">
+        <h2>Listing: {{ listings.title }}</h2>
+        {% if listings.lister == user and listings.status == True %}
+            <form action="{% url 'closeAuction' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="item" value="{{ listings.id }}">
+                <button class="btn btn-danger" style="margin-left: 5px;">Close the Auction</button>
+            </form>
+        {% endif %}
+    </div>
     {% if user.is_authenticated and listings.status == True %}
         <div style="line-height: 5px;">
             <form action="{% url 'addWatchlisting' %}" method="post">
@@ -24,7 +33,7 @@
             </p>
             <form class="form" action="{% url 'listing' listings.title %}" method="post">
                 {% csrf_token %}
-                <div class="row" style="padding: 0 10px 0 15px;">
+                <div class="row align-items-center" style="padding: 0 10px 0 15px;">
                     <input type="number" min="{{ listings.price|add:'1' }}" value="{{ listings.price|add:'1' }}" class="form-control col col-2" name="bid" style="margin-right:15px;">
                     <p style="line-height: 5px;"></p>
                     <button class="btn btn-primary" type="submit" style="height: 2.5rem;">Place Bid</button>

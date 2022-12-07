@@ -10,7 +10,7 @@ from .models import User, Categories, Conditions, AuctionListings, Bids, Comment
 
 
 def index(request):
-    listings = AuctionListings.objects.filter(status = True)
+    listings = AuctionListings.objects.filter(status=True)
     for listing in listings:
         try:
             listing.price = Bids.objects.filter(bided_item=listing).last().bid
@@ -93,7 +93,6 @@ def myListings(request):
         if listing.winner == request.user:
             wonStatus = True
 
-    #closedListings = closedListings.filter(status=True)
     return render(request, "auctions/index.html", {
         "category": "My Listings",
         "listings": activeListings,
@@ -155,19 +154,35 @@ def createListing(request):
 
 
 def watchlist(request):
-    watchlistings = Watchlist.objects.filter(user_id=request.user)
-    for watchlisting in watchlistings:
-        watchlisting.title=watchlisting.item_id.title
-        watchlisting.description=watchlisting.item_id.description
-        watchlisting.image=watchlisting.item_id.image
-        watchlisting.time=watchlisting.item_id.time
+    activeListings = Watchlist.objects.filter(user_id=request.user, item_id__status=True)
+    archivedListings = Watchlist.objects.filter(user_id=request.user, item_id__status=False)
+    for listing in activeListings:
+        listing.title=listing.item_id.title
+        listing.description=listing.item_id.description
+        listing.image=listing.item_id.image
+        listing.time=listing.item_id.time
+        listing.status=AuctionListings.objects.get(title=listing.title).status
         try:
-            watchlisting.price = Bids.objects.filter(bided_item=watchlisting.item_id).last().bid
+            listing.price = Bids.objects.filter(bided_item=listing.item_id).last().bid
         except:
-            watchlisting.price = watchlisting.item_id.price
+            listing.price = listing.item_id.price
+
+    for listing in archivedListings:
+        listing.title=listing.item_id.title
+        listing.description=listing.item_id.description
+        listing.image=listing.item_id.image
+        listing.time=listing.item_id.time
+        listing.close_time=listing.item_id.time
+        listing.status=AuctionListings.objects.get(title=listing.title).status
+        try:
+            listing.price = Bids.objects.filter(bided_item=listing.item_id).last().bid
+        except:
+            listing.price = listing.item_id.price
+
     return render(request, "auctions/index.html", {
         "category": "Watchlist",
-        "listings": watchlistings
+        "listings": activeListings,
+        "archivedListings": archivedListings
     })
 
 def addWatchlisting(request):
