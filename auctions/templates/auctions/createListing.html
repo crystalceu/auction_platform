@@ -2,29 +2,29 @@
 
 {% block body %}
     <h2>Create Listing</h2>
-
+    <br>
     <form class="form" action="{% url 'createListing' %}" method="post">
         {% csrf_token %}
         <table>
             <tbody>
                 <tr>
-                    <th>Name of listing</th>
+                    <th><a>Name of listing</a></th>
                     <th><input class="form-control" name="title"></th>
                 </tr>
                 <tr>
-                    <th>Url for image</th>
+                    <th><a>Url for image</a></th>
                     <th><input class="form-control" name="image"></th>
                 </tr>
                 <tr>
-                    <th>Description</th>
+                    <th><a>Description</a></th>
                     <th><textarea class="form-control" name="description"></textarea></th>
                 </tr>
                 <tr>
-                    <th>Price</th>
+                    <th><a>Price</a></th>
                     <th><input class="form-control" name="price"></th>
                 </tr>
                 <tr>
-                    <th>Category</th>
+                    <th><a>Category</a></th>
                     <th><select class="form-control" name="category">
                         {% for category in categories %}
                             <option value="{{ category.id }}">{{ category.category_name }}</option>
@@ -32,7 +32,7 @@
                     </select></th>
                 </tr>
                 <tr>
-                    <th>Condition</th>
+                    <th><a>Condition</a></th>
                     <th><select class="form-control" name="condition">
                         {% for condition in conditions %}
                             <option value="{{ condition.id }}">{{ condition.condition_name }}</option>
@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th><button class="btn btn-primary">Create Listing</button></th>
+                    <th><button class="btn btnprimary">Create Listing</button></th>
                 </tr>
             </tbody>
         </table>

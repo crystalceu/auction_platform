@@ -43,7 +43,7 @@ def listing(request, listing):
             watchlist = Watchlist.objects.filter(user_id=request.user, item_id=listingQuery)
         except:
             watchlist = []
-        button_status="btn-secondary" if len(watchlist) == 0 else "btn-success"
+        button_status="btn-secondary" if len(watchlist) == 0 else "btnsuccess"
 
         commentlist = Comments.objects.filter(com_item_id=listingQuery)
 

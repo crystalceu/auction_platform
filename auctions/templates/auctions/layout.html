@@ -8,46 +8,55 @@
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
     </head>
     <body>
-        <h1>Auctions</h1>
-        <div>
-            {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
-            {% else %}
-                Not signed in.
-            {% endif %}
+        <div class="header">
+            <h1>Auctions</h1>
+            <div>
+                {% if user.is_authenticated %}
+                    Signed in as <strong>{{ user.username }}</strong>.
+                {% else %}
+                    Not signed in.
+                {% endif %}
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}aactive{% endif %}" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'categories' %}aactive{% endif %}" href="{% url 'categories' %}">Categories</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'watchlist' %}aactive{% endif %}" href="{% url 'watchlist' %}">Watchlist 
+                            {% if user.user_id.all.count != 0 %}<span class="badge bg-secondary">{{ user.user_id.all.count }}</span>{% endif %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'createListing' %}aactive{% endif %}" href="{% url 'createListing' %}">Create Listing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'myListings' %}aactive{% endif %}" href="{% url 'myListings' %}">My Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}aactive{% endif %}" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}aactive{% endif %}" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}aactive{% endif %}" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'index' %}aactive{% endif %}" href="{% url 'index' %}">Active Listings</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'categories' %}aactive{% endif %}" href="{% url 'categories' %}">Categories</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'watchlist' %}aactive{% endif %}" href="{% url 'watchlist' %}">Watchlist 
-                        {% if user.user_id.all.count != 0 %}<span class="badge bg-secondary">{{ user.user_id.all.count }}</span>{% endif %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'createListing' %}aactive{% endif %}" href="{% url 'createListing' %}">Create Listing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'myListings' %}aactive{% endif %}" href="{% url 'myListings' %}">My Listings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'logout' %}aactive{% endif %}" href="{% url 'logout' %}">Log Out</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'login' %}aactive{% endif %}" href="{% url 'login' %}">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'register' %}aactive{% endif %}" href="{% url 'register' %}">Register</a>
-                </li>
-            {% endif %}
-        </ul>
-        <hr>
-        {% block body %}
-        {% endblock %}
+        <div class="body">
+            {% block body %}
+            {% endblock %}
+            <br>
+        </div>
+        <footer>
+            <div class="text-center">
+                <p style="color:#b6d7ca">Copyright &copy 2022 Auction Ltd</p>
+            </div>
+        </footer>
     </body>
 </html>
